@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto.control.IncidenteControl;
 import proyecto.modelo.Incidente;
+import java.awt.Desktop;
+import java.net.URI;
 
 public class VentanaIncidentes extends JFrame implements ActionListener {
     private IncidenteControl control = new IncidenteControl();
@@ -35,6 +37,7 @@ public class VentanaIncidentes extends JFrame implements ActionListener {
     private JButton btnEditar = new JButton("Editar");
     private JButton btnEliminar = new JButton("Eliminar");
     private JButton btnLimpiar = new JButton("Limpiar");
+    private JButton btnDashboard = new JButton("Ver Dashboard");
     private JLabel lblTotal = new JLabel();
     private DefaultTableModel modelo = new DefaultTableModel();
     private JTable tabla = new JTable(modelo);
@@ -68,6 +71,9 @@ public class VentanaIncidentes extends JFrame implements ActionListener {
         ponerBoton(btnEditar, 260);
         ponerBoton(btnEliminar, 380);
         ponerBoton(btnLimpiar, 500);
+        btnDashboard.setBounds(1060, 175, 155, 30);
+        btnDashboard.addActionListener(this);
+        add(btnDashboard);
         
         lblTotal.setBounds(650, 175, 300, 30);
         add(lblTotal);
@@ -119,6 +125,8 @@ public class VentanaIncidentes extends JFrame implements ActionListener {
             eliminar();
         } else if (e.getSource() == btnLimpiar) {
             limpiar();
+        }else if (e.getSource() == btnDashboard) {
+            abrirDashboard();
         }
     }
 
@@ -238,5 +246,13 @@ public class VentanaIncidentes extends JFrame implements ActionListener {
             modelo.addRow(fila);
         }
         lblTotal.setText("Total de incidentes: " + control.getContador());
+    }
+    private void abrirDashboard() {
+        String enlace = "https://app.powerbi.com/groups/me/reports/01671a6c-6840-42da-9483-647714847f52/4404cd3b058122544b86?experience=power-bi";
+        try {
+            Desktop.getDesktop().browse(new URI(enlace));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo abrir el dashboard");
+        }
     }
 }
